@@ -1,0 +1,20 @@
+计算流程：
+
+index_list = ['000016', '000300', '000904']
+1. 在14:52左右预先加载两个训练好的做多和做空的模型,wp_buy, wp_sell，显存分配60%
+
+2. while循环执行到14:57开始读取最新的数据:data = get_realtime_quote(index_list)
+3. 更新本地相应csv文件，只需要在最后添加一行数据:update_data(data)
+4. 提取特征到相应的特征文件夹stock_features里: extract_features(index_list)
+5. 写一个for循环，对每一个index，分别
+	5.1）读取特征: read_features(index)
+	5.2）使用wp_buy和wp_sell分别预测两个信号sig_buy, sig_sell
+	5.3）保存信号到相应的文件里
+	
+6. 到15:01收盘后，再次读取最新数据: data = get_realtime_quot(index_list)
+7. 更新本地相应csv文件，修改最后一行数据: update_data(data, modify=True)
+8. 提取特征到相应的特征文件夹stock_features里: extract_features(index_list)
+9. 写一个for循环，对每一个index，分别
+	9.1）读取特征: read_features(index)
+	9.2）使用wp_buy和wp_sell分别预测两个信号sig_buy, sig_sell
+	9.3）保存信号到相应的文件里
